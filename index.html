@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccountFlow - Accounting Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: #1e40af;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #475569;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.025em;
+        }
+
+        .table tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .status-paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-overdue {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .cta-title {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: white;
+            color: #1e40af;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .setup-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .step {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .feature-icon {
+            color: #059669;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .container {
+                margin: 1rem auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">📊 AccountFlow</div>
+        <div class="subtitle">Professional Accounting Software with Google Sheets Integration</div>
+    </header>
+
+    <div class="container">
+        <!-- Dashboard Cards -->
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-icon">💰</div>
+                <div class="card-title">Total Revenue</div>
+                <div class="card-value">$45,231</div>
+                <div class="card-description">+12.5% from last month</div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⏰</div>
+                <div class="card-title">Outstanding</div>
+                <div class="card-value">$8,492</div>
+                <div class="card-description">3 invoices pending</div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">💳</div>
+                <div class="card-title">Monthly Expenses</div>
+                <div class="card-value">$12,847</div>
+                <div class="card-description">8.2% decrease</div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <div class="card-title">Net Profit</div>
+                <div class="card-value">$32,384</div>
+                <div class="card-description">18.7% margin</div>
+            </div>
+        </div>
+
+        <!-- Recent Invoices -->
+        <div class="section">
+            <div class="section-title">Recent Invoices</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Invoice #</th>
+                        <th>Client</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>INV-001</td>
+                        <td>Acme Corp</td>
+                        <td>2025-01-28</td>
+                        <td>$2,500.00</td>
+                        <td><span class="status-badge status-paid">Paid</span></td>
+                    </tr>
+                    <tr>
+                        <td>INV-002</td>
+                        <td>Tech Solutions Inc</td>
+                        <td>2025-01-26</td>
+                        <td>$1,800.00</td>
+                        <td><span class="status-badge status-overdue">Overdue</span></td>
+                    </tr>
+                    <tr>
+                        <td>INV-003</td>
+                        <td>StartupXYZ</td>
+                        <td>2025-01-25</td>
+                        <td>$3,200.00</td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Features -->
+        <div class="section">
+            <div class="section-title">Key Features</div>
+            <div class="features-grid">
+                <div class="feature">
+                    <span class="feature-icon">✅</span>
+                    <span>Professional Dashboard</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✅</span>
+                    <span>Invoice Management</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✅</span>
+                    <span>Quotation System</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✅</span>
+                    <span>Expense Tracking</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✅</span>
+                    <span>Google Sheets Integration</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✅</span>
+                    <span>Real-time Sync</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✅</span>
+                    <span>Mobile Responsive</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✅</span>
+                    <span>No Monthly Fees</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <div class="cta-title">Ready to Get the Full Interactive Version?</div>
+            <div class="cta-description">
+                This is a preview of AccountFlow. Get the complete interactive version with forms, 
+                real-time editing, and Google Sheets integration.
+            </div>
+            <a href="#" class="btn">Get Full Version</a>
+        </div>
+
+        <!-- Setup Steps -->
+        <div class="section">
+            <div class="section-title">Quick Setup Guide</div>
+            <div class="setup-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Create Google Sheet</h3>
+                    <p>Set up your accounting spreadsheet with invoices, quotations, and expenses sheets.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Deploy Google Apps Script</h3>
+                    <p>Copy our script code and deploy it as a web app for database connectivity.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Host Your App</h3>
+                    <p>Upload to GitHub Pages, Netlify, or any web hosting service for free.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Start Managing</h3>
+                    <p>Begin creating invoices, tracking expenses, and managing your finances!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample Data -->
+        <div class="section">
+            <div class="section-title">Recent Quotations</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Quote #</th>
+                        <th>Client</th>
+                        <th>Amount</th>
+                        <th>Valid Until</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>QUO-001</td>
+                        <td>New Client Corp</td>
+                        <td>$4,500.00</td>
+                        <td>2025-02-28</td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>QUO-002</td>
+                        <td>Future Tech Ltd</td>
+                        <td>$3,200.00</td>
+                        <td>2025-02-27</td>
+                        <td><span class="status-badge status-paid">Accepted</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
